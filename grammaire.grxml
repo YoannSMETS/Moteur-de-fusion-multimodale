@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<grammar version="1.0" xml:lang="fr-FR" mode="voice" root="COMMANDE"
+         xmlns="http://www.w3.org/2001/06/grammar" tag-format="semantics/1.0">
+
+  <!-- Règle racine -->
+  <rule id="COMMANDE" scope="public">
+    <one-of>
+      <item><ruleref uri="#PHRASE_CREATION"/></item>
+      <item><ruleref uri="#PHRASE_DEPLACEMENT"/></item>
+      <!-- Commandes unitaires / atomiques pour dialogue flexible -->
+      <item><ruleref uri="#ACTION"/></item>
+      <item><ruleref uri="#FORME"/></item>
+      <item><ruleref uri="#COULEUR"/></item>
+      <item><ruleref uri="#LOCALISATION"/></item>
+    </one-of>
+  </rule>
+
+  <!-- ================= ACTIONS ================= -->
+  <rule id="ACTION">
+    <one-of>
+      <item>créer <tag>out="action:creer";</tag></item>
+      <item>ajoute <tag>out="action:creer";</tag></item>
+      <item>dessine <tag>out="action:creer";</tag></item>
+      <item>déplacer <tag>out="action:deplacer";</tag></item>
+      <item>bouger <tag>out="action:deplacer";</tag></item>
+    </one-of>
+  </rule>
+
+  <!-- ================= FORMES ================= -->
+  <rule id="FORME">
+    <one-of>
+      <item>rectangle <tag>out="forme:rectangle";</tag></item>
+      <item>carré <tag>out="forme:rectangle";</tag></item>
+      <item>cercle <tag>out="forme:cercle";</tag></item>
+      <item>rond <tag>out="forme:cercle";</tag></item>
+      <item>triangle <tag>out="forme:triangle";</tag></item>
+      <item>losange <tag>out="forme:losange";</tag></item>
+    </one-of>
+  </rule>
+
+  <!-- ================= COULEURS ================= -->
+  <rule id="COULEUR">
+    <one-of>
+      <item>rouge <tag>out="couleur:rouge";</tag></item>
+      <item>vert <tag>out="couleur:vert";</tag></item>
+      <item>verte <tag>out="couleur:vert";</tag></item>
+      <item>bleu <tag>out="couleur:bleu";</tag></item>
+      <item>bleue <tag>out="couleur:bleu";</tag></item>
+      <item>de cette couleur <tag>out="couleur:cette_couleur";</tag></item>
+    </one-of>
+  </rule>
+
+  <!-- ================= DÉICTIQUES / POSITIONS ================= -->
+  <rule id="LOCALISATION">
+    <one-of>
+      <item>ici <tag>out="pos:ici";</tag></item>
+      <item>à cet endroit <tag>out="pos:ici";</tag></item>
+      <item>cet objet <tag>out="select:cet_objet";</tag></item>
+      <item>celui là <tag>out="select:cet_objet";</tag></item>
+    </one-of>
+  </rule>
+
+  <!-- ================= PHRASES COMPLEXES : CRÉATION ================= -->
+  <rule id="PHRASE_CREATION">
+    <ruleref uri="#ACTION"/>
+    <ruleref uri="#FORME"/>
+
+    <item repeat="0-1"><ruleref uri="#LOCALISATION"/></item>
+    <item repeat="0-1"><ruleref uri="#COULEUR"/></item>
+
+    <item repeat="0-1"><ruleref uri="#LOCALISATION"/></item>
+  </rule>
+
+  <!-- ================= PHRASES COMPLEXES : DÉPLACEMENT ================= -->
+  <rule id="PHRASE_DEPLACEMENT">
+    <ruleref uri="#ACTION"/>
+    <item repeat="0-1"><ruleref uri="#FORME"/></item>
+    <item repeat="0-1"><ruleref uri="#COULEUR"/></item>
+    <ruleref uri="#LOCALISATION"/>
+  </rule>
+
+</grammar>
